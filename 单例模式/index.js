@@ -126,6 +126,37 @@ console.log(b1)
 
 console.log(a1 == b1)
 
+//JavaScript 中的单例模式
+
+//1. 使用命名空间
+//(1) 对象字面量
+
+var namespace1 = {
+    a: function () {
+        console.log('a')
+    },
+    b: function () {
+        console.log('b')
+    }
+}
+
+//(2)动态的创建命名空间
+var MyApp = {};
+MyApp.namespace = function( name ){ 
+    var parts = name.split( '.' ); 
+    var current = MyApp;
+    for ( var i in parts ){
+        if ( !current[ parts[ i ] ] ){ 
+            current[ parts[ i ] ] = {};
+        }
+        current = current[ parts[ i ] ]; //current[ parts[ i ] ]  的引用指向 dom
+    } 
+};
+
+MyApp.namespace( 'event' );
+MyApp.namespace( 'dom.style' );
+
+
 
 
 
