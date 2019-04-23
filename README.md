@@ -53,7 +53,6 @@ Singleton.getInstance = (function(name){
     }
 })()
 
-
 var Singleton1 = Singleton.getInstance('bob')
 var Singleton2 = Singleton.getInstance('alla')
 
