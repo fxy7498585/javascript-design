@@ -11,7 +11,9 @@ var singleton = function(name){
 singleton.prototype.getName = function(){
     console.log(this.name);
 }
-singleton.getInstance = function(name){
+
+//singleton静态方法
+singleton.getInstance = function(name){ 
     console.log("this.instance")
     console.log(this.instance)
     if(!this.instance){
@@ -27,6 +29,9 @@ var singleton2 = singleton.getInstance('alla')
 console.log(singleton1);
 console.log(singleton2);
 console.log(singleton1 === singleton2)
+
+
+
 
 //或者。。。。
 
@@ -156,6 +161,102 @@ MyApp.namespace = function( name ){
 MyApp.namespace( 'event' );
 MyApp.namespace( 'dom.style' );
 
+//使用闭包封装私有变量
+
+var user = (function(){
+    var _name = 'bob',
+        _age = 100;
+    return {
+        getNameAndAge: function(){
+            console.log(_name,_age)
+        }
+    }
+})()
+
+
+user.getNameAndAge()
+
+
+//es6单例模式应用-->点击登录按钮弹出浮窗
+
+class loginLayer {
+    constructor () {
+        this.instance = null;
+        this.init();
+    }
+    init(){
+        var div = document.createElement('div');
+        div.classList.add('login-layer');
+        div.innerHTML = "我是登录浮窗";
+        document.body.appendChild(div);
+    }
+    // 静态方法作为广为人知的接口
+    static getInstance(){
+        if(!this.instance){
+            this.instance = new loginLayer()
+        }
+        console.log(this.instance)
+        return this.instance;
+    }
+}
+
+const btn = document.getElementById('loginBtn');
+btn.addEventListener('click', function() {
+    loginLayer.getInstance();
+    var loginlayer = document.getElementsByClassName('login-layer')[0];
+    setTimeout(() => {
+        document.body.removeChild(loginlayer)
+        // loginlayer.style.display = 'none';
+    }, 1000);
+}, false);  
+
+
+
+var createLoginLayer = (function(){
+    var div;
+    return function(){
+        if(!div){
+            div = document.createElement('div');
+            div.innerHTML = '我是登录浮窗'; 
+            div.style.display = 'none'; 
+            document.body.appendChild( div );
+        }
+        return div;
+    }
+})()
+
+
+btn.addEventListener('click',function(){
+    var loginLayer = createLoginLayer();
+    loginLayer.style.display = 'block';
+})
+
+//通用的惰性单例
+//进行改造
+
+var getSingle = function(fn){
+    var result;
+    return function () {
+        return result || (result = fn.apply(this, arguments));
+    }
+}
+
+
+var createLoginDiv =function(){
+    div = document.createElement('div');
+    div.innerHTML = '我是登录浮窗'; 
+    div.style.display = 'none'; 
+    document.body.appendChild( div );
+    return div;
+}
+
+
+var createSingle = getSingle(createLoginDiv)
+
+btn.addEventListener('click',function(){
+    var loginLayer = createSingle();
+    loginLayer.style.display = 'block';
+})
 
 
 

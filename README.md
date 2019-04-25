@@ -161,3 +161,68 @@ console.log(a1 == b1)
     MyApp.namespace( 'dom.style' );
 
 
+    (5-2)使用闭包封装私有变量
+    var user = (function(){
+        var _name = 'bob',
+            _age = 100;
+        return {
+            getNameAndAge: function(){
+                console.log(_name,_age)
+            }
+        }
+    })()
+
+
+    user.getNameAndAge()
+
+
+(6)惰性单例
+
+var createLoginLayer = (function(){
+    var div;
+    return function(){
+        if(!div){
+            div = document.createElement('div');
+            div.innerHTML = '我是登录浮窗'; 
+            div.style.display = 'none'; 
+            document.body.appendChild( div );
+        }
+        return div;
+    }
+})()
+
+
+btn.addEventListener('click',function(){
+    var loginLayer = createLoginLayer();
+    loginLayer.style.display = 'block';
+})
+
+
+//通用的惰性单例
+
+var getSingle = function(fn){
+    var result;
+    return function () {
+        return result || (result = fn.apply(this, arguments));
+    }
+}
+
+
+var createLoginDiv =function(){
+    div = document.createElement('div');
+    div.innerHTML = '我是登录浮窗'; 
+    div.style.display = 'none'; 
+    document.body.appendChild( div );
+    return div;
+}
+
+
+var createSingle = getSingle(createLoginDiv)
+
+btn.addEventListener('click',function(){
+    var loginLayer = createSingle();
+    loginLayer.style.display = 'block';
+})
+
+
+
