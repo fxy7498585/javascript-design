@@ -260,4 +260,25 @@ btn.addEventListener('click',function(){
 
 
 
+Function.prototype.before = function (before) {
+    var _self = this;
+    return function () {
+        before.apply(this, arguments)
+        _self.apply(this, arguments)
+    }
+}
+var fn = function () {
+    console.log(1)
+}
+
+var fns = fn.before(function(){
+    console.log(2)
+})
+
+fns();
+
+
+
+//使用策略模式计算奖金
+
 
