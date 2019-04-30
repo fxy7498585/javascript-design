@@ -40,3 +40,22 @@ var Bounce  = new bounce()
 Bounce.setSalary(10000);
 Bounce.setStrategy(new performanceS())
 console.log(Bounce.getBounce())
+
+
+//2-2 JavaScript 版本的策略模式
+var strategies = {
+    'S': function(salary){
+        return salary * 4;
+    },
+    'A': function(salary){
+        return salary * 3;
+    },
+    'B': function(salary){
+        return salary * 2;
+    }
+}
+
+var calculateBonus = function(level, salary){
+    return strategies[level](salary);
+}
+console.log(calculateBonus('A', 10000));
