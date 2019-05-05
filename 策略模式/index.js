@@ -59,3 +59,6 @@ var calculateBonus = function(level, salary){
     return strategies[level](salary);
 }
 console.log(calculateBonus('A', 10000));
+
+
+
